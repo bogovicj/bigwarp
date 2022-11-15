@@ -67,7 +67,7 @@ public class BigWarpARGBExporter extends BigWarpExporter<ARGBType>
 //	}
 	
 	public BigWarpARGBExporter(
-			BigWarpData<ARGBType> bwData,
+			BigWarpData bwData,
 			final List< ConverterSetup > convSetups,
 			final Interpolation interp,
 			final ProgressWriter progress )
@@ -129,6 +129,7 @@ public class BigWarpARGBExporter extends BigWarpExporter<ARGBType>
 		return raiStack;
 	}
 
+	@Override
 	public ImagePlus export()
 	{
 		buildTotalRenderTransform();

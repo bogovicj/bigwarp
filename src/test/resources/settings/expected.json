@@ -84,67 +84,58 @@
         "CurrentTimePoint": 0
     },
     "SetupAssignments": {
-        "ConverterSetups": [
-            {
-                "id": 0,
+        "ConverterSetups": {
+            "0": {
                 "min": 0.0,
                 "max": 860.4,
                 "color": -10027213,
                 "groupId": 0
             },
-            {
-                "id": 1,
+            "1": {
                 "min": 0.0,
                 "max": 255.0,
                 "color": 0,
                 "groupId": 1
             },
-            {
-                "id": 2,
+            "2": {
                 "min": 0.0,
                 "max": 2000.0,
                 "color": -39169,
                 "groupId": 2
             },
-            {
-                "id": 3,
+            "3": {
                 "min": 0.0,
                 "max": 433.408,
                 "color": -1,
                 "groupId": 3
             },
-            {
-                "id": 956736363,
+            "956736363": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 4
             },
-            {
-                "id": 1006827158,
+            "1006827158": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 5
             },
-            {
-                "id": 1696993146,
+            "1696993146": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 6
             },
-            {
-                "id": 33872301,
+            "33872301": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 7
             }
-        ],
-        "MinMaxGroups": [
-            {
-                "id": 0,
+        },
+        "MinMaxGroups": {
+            "0": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -152,8 +143,7 @@
                 "currentMin": 0.0,
                 "currentMax": 860.4
             },
-            {
-                "id": 1,
+            "1": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -161,8 +151,7 @@
                 "currentMin": 0.0,
                 "currentMax": 255.0
             },
-            {
-                "id": 2,
+            "2": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -170,8 +159,7 @@
                 "currentMin": 0.0,
                 "currentMax": 2000.0
             },
-            {
-                "id": 3,
+            "3": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -179,8 +167,7 @@
                 "currentMin": 0.0,
                 "currentMax": 255.0
             },
-            {
-                "id": 4,
+            "4": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -188,8 +175,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 5,
+            "5": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -197,8 +183,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 6,
+            "6": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -206,8 +191,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 7,
+            "7": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -215,7 +199,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             }
-        ]
+        }
     },
     "Bookmarks": {
         "bookmarks": {}

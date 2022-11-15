@@ -1,6 +1,5 @@
 package bigwarp;
 
-import bdv.gui.BigWarpViewerOptions;
 import bdv.tools.bookmarks.Bookmarks;
 import bdv.tools.brightness.ConverterSetup;
 import bdv.tools.brightness.MinMaxGroup;
@@ -9,35 +8,28 @@ import bdv.viewer.state.SourceGroup;
 import bdv.viewer.state.XmlIoViewerState;
 import bigwarp.source.PlateauSphericalMaskSource;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
-import ij.ImagePlus;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PipedReader;
 import java.io.PipedWriter;
-import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.List;
 import mpicbg.spim.data.SpimDataException;
 import net.imglib2.FinalInterval;
 import net.imglib2.RealPoint;
-import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.position.FunctionRandomAccessible;
 import net.imglib2.realtransform.AffineTransform3D;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.view.Views;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.jdom2.JDOMException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -47,8 +39,10 @@ public class SerializationTest
 	private BigWarp< ? > bw;
 
 	@After
-	public void	after() {
-		if (bw != null) {
+	public void after()
+	{
+		if ( bw != null )
+		{
 			bw.closeAll();
 			bw = null;
 		}
@@ -71,7 +65,7 @@ public class SerializationTest
 		center.add( 0.0 );
 		expected.add( "center", center );
 
-		Assert.assertEquals( expected, actual );
+		BigWarpTestUtils.assertJsonDiff( expected, actual );
 	}
 
 	@Test
@@ -109,11 +103,11 @@ public class SerializationTest
 		{
 			translateArray.add( val );
 		}
-		bookmarksObj.add("identity", identityArray);
-		bookmarksObj.add("scale", scaleArray);
-		bookmarksObj.add("translate", translateArray);
+		bookmarksObj.add( "identity", identityArray );
+		bookmarksObj.add( "scale", scaleArray );
+		bookmarksObj.add( "translate", translateArray );
 
-		Assert.assertEquals( expected, actual );
+		BigWarpTestUtils.assertJsonDiff( expected, actual );
 	}
 
 	@Test
@@ -128,13 +122,13 @@ public class SerializationTest
 		expected.addProperty( "location", "/tmp" );
 		saver.stop();
 
-		Assert.assertEquals( expected, actual );
+		BigWarpTestUtils.assertJsonDiff( expected, actual );
 	}
 
 	@Test
-	public void setupAssignmentsTest() throws SpimDataException, IOException
+	public void setupAssignmentsTest() throws SpimDataException, IOException, URISyntaxException
 	{
-		bw = createBigWarp( new boolean[] { true, false, false, false } );
+		bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false, false, false } );
 
 		final PipedWriter writer = new PipedWriter();
 		final PipedReader in = new PipedReader( writer, 10000 );
@@ -147,42 +141,41 @@ public class SerializationTest
 		final JsonElement actual = JsonParser.parseReader( in );
 
 		final JsonObject expected = new JsonObject();
-		final JsonArray setups = new JsonArray();
+		final JsonObject setups = new JsonObject();
 		expected.add( "ConverterSetups", setups );
 		final List< MinMaxGroup > minMaxGroups = bw.setupAssignments.getMinMaxGroups();
 		for ( final ConverterSetup setup : bw.setupAssignments.getConverterSetups() )
 		{
 			final JsonObject setupObj = new JsonObject();
-			setupObj.addProperty( "id" , setup.getSetupId() );
-			setupObj.addProperty( "min" , setup.getDisplayRangeMin() );
-			setupObj.addProperty( "max" , setup.getDisplayRangeMax() );
-			setupObj.addProperty( "color" , setup.getColor().get() );
-			setupObj.addProperty( "groupId" , minMaxGroups.indexOf( bw.setupAssignments.getMinMaxGroup( setup ) ) );
-			setups.add( setupObj );
+			setupObj.addProperty( "min", setup.getDisplayRangeMin() );
+			setupObj.addProperty( "max", setup.getDisplayRangeMax() );
+			setupObj.addProperty( "color", setup.getColor().get() );
+			setupObj.addProperty( "groupId", minMaxGroups.indexOf( bw.setupAssignments.getMinMaxGroup( setup ) ) );
+			setups.add( String.valueOf( setup.getSetupId() ), setupObj );
 		}
-		final JsonArray groups = new JsonArray();
+		final JsonObject groups = new JsonObject();
 		expected.add( "MinMaxGroups", groups );
 		for ( int i = 0; i < minMaxGroups.size(); i++ )
 		{
 			final MinMaxGroup minMaxGroup = minMaxGroups.get( i );
 			final JsonObject groupObj = new JsonObject();
-			groupObj.addProperty( "id" , i );
-			groupObj.addProperty( "fullRangeMin" , minMaxGroup.getFullRangeMin() );
-			groupObj.addProperty( "fullRangeMax" , minMaxGroup.getFullRangeMax() );
-			groupObj.addProperty( "rangeMin" , minMaxGroup.getRangeMin() );
-			groupObj.addProperty( "rangeMax" , minMaxGroup.getRangeMax() );
-			groupObj.addProperty( "currentMin" , minMaxGroup.getMinBoundedValue().getCurrentValue() );
-			groupObj.addProperty( "currentMax" , minMaxGroup.getMaxBoundedValue().getCurrentValue() );
-			groups.add( groupObj );
+			groupObj.addProperty( "fullRangeMin", minMaxGroup.getFullRangeMin() );
+			groupObj.addProperty( "fullRangeMax", minMaxGroup.getFullRangeMax() );
+			groupObj.addProperty( "rangeMin", minMaxGroup.getRangeMin() );
+			groupObj.addProperty( "rangeMax", minMaxGroup.getRangeMax() );
+			groupObj.addProperty( "currentMin", minMaxGroup.getMinBoundedValue().getCurrentValue() );
+			groupObj.addProperty( "currentMax", minMaxGroup.getMaxBoundedValue().getCurrentValue() );
+			groups.add( String.valueOf( i ), groupObj );
 		}
-		Assert.assertEquals( expected , actual);
+
+		BigWarpTestUtils.assertJsonDiff( expected, actual );
 
 	}
 
 	@Test
-	public void viewerPanelTest() throws SpimDataException, IOException
+	public void viewerPanelTest() throws SpimDataException, IOException, URISyntaxException
 	{
-		bw = createBigWarp( new boolean[] { true, false, false, false } );
+		bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false, false, false } );
 
 		final PipedWriter writer = new PipedWriter();
 		final PipedReader in = new PipedReader( writer, 10000 );
@@ -199,7 +192,7 @@ public class SerializationTest
 		final JsonArray sources = new JsonArray();
 		expected.add( XmlIoViewerState.VIEWERSTATE_SOURCES_TAG, sources );
 		/* All sources are active */
-		bw.viewerP.getState().getSources().forEach( source -> sources.add(source.isActive()) );
+		bw.viewerP.getState().getSources().forEach( source -> sources.add( source.isActive() ) );
 
 		final JsonArray groups = new JsonArray();
 		expected.add( XmlIoViewerState.VIEWERSTATE_GROUPS_TAG, groups );
@@ -219,13 +212,13 @@ public class SerializationTest
 			}
 			groups.add( sourceGroupObj );
 		}
-		expected.addProperty( XmlIoViewerState.VIEWERSTATE_DISPLAYMODE_TAG, XmlIoViewerState.VIEWERSTATE_DISPLAYMODE_VALUE_GROUP);
+		expected.addProperty( XmlIoViewerState.VIEWERSTATE_DISPLAYMODE_TAG, XmlIoViewerState.VIEWERSTATE_DISPLAYMODE_VALUE_GROUP );
 		expected.addProperty( XmlIoViewerState.VIEWERSTATE_INTERPOLATION_TAG, XmlIoViewerState.VIEWERSTATE_INTERPOLATION_VALUE_NEARESTNEIGHBOR );
 		expected.addProperty( XmlIoViewerState.VIEWERSTATE_CURRENTSOURCE_TAG, value.getState().getCurrentSource() );
 		expected.addProperty( XmlIoViewerState.VIEWERSTATE_CURRENTGROUP_TAG, value.getState().getCurrentGroup() );
 		expected.addProperty( XmlIoViewerState.VIEWERSTATE_CURRENTTIMEPOINT_TAG, value.getState().getCurrentTimepoint() );
 
-		Assert.assertEquals( prettyPrint(expected), prettyPrint( actual.getAsJsonObject()) );
+		BigWarpTestUtils.assertJsonDiff( expected, actual );
 	}
 
 	@Test
@@ -239,7 +232,7 @@ public class SerializationTest
 		// bw.loadSettings("src/test/resources/settings/settingsWithSource.json");
 		// Grab the sources
 		// Compare the ids, urls, isMoving status, and isActive
-		assert(false);
+		assert ( false );
 	}
 
 	/* When creating and closing multiple BigWarp instances, occassionally the comparison test fails.
@@ -251,7 +244,7 @@ public class SerializationTest
 		for ( int i = 0; i < 20; i++ )
 		{
 			System.out.println( i );
-			bw = createBigWarp( new boolean[] { true, false, false, false } );
+			bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false, false, false } );
 
 			/* Load the known good*/
 			final String originalXmlSettings = "src/test/resources/settings/compareKnownXml.bigwarp.settings.xml";
@@ -272,9 +265,9 @@ public class SerializationTest
 	}
 
 	@Test
-	public void compareKnownXmlComparisonTest() throws SpimDataException, IOException, JDOMException, SAXException
+	public void compareKnownXmlComparisonTest() throws SpimDataException, IOException, JDOMException, SAXException, URISyntaxException
 	{
-		BigWarp< ? > bw = createBigWarp( new boolean[] { true, false, false, false } );
+		BigWarp< ? > bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false, false, false } );
 
 		final String originalXmlSettings = "src/test/resources/settings/compareKnownXml.bigwarp.settings.xml";
 		bw.loadSettings( originalXmlSettings );
@@ -290,7 +283,7 @@ public class SerializationTest
 //		bw.closeAll();
 //		bw = createBigWarp(new boolean[]{true, false, false, false});
 
-		bw.loadSettings( tmpJsonFile.getAbsolutePath() );
+		bw.loadSettings( tmpJsonFile.getAbsolutePath(), true );
 		final File tmpXmlFile = Files.createTempFile( "xml-settings", ".xml" ).toFile();
 		bw.saveSettings( tmpXmlFile.getAbsolutePath() );
 		XMLUnit.setIgnoreWhitespace( true );
@@ -300,9 +293,9 @@ public class SerializationTest
 	}
 
 	@Test
-	public void jsonLoadSaveComparisonTest() throws SpimDataException, IOException, JDOMException
+	public void jsonLoadSaveComparisonTest() throws SpimDataException, IOException, JDOMException, URISyntaxException
 	{
-		bw = createBigWarp( new boolean[] { true, false } );
+		bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false } );
 
 		final String expectedJsonFile = "src/test/resources/settings/expected_with_dfield.json";
 		bw.loadSettings( expectedJsonFile );
@@ -320,13 +313,13 @@ public class SerializationTest
 		final JsonElement jsonSettingsOut = JsonParser.parseReader( in );
 		final JsonElement expectedJson = JsonParser.parseReader( new FileReader( expectedJsonFile ) );
 
-		Assert.assertEquals( expectedJson, jsonSettingsOut );
+		BigWarpTestUtils.assertJsonDiff( expectedJson, jsonSettingsOut );
 	}
 
 	@Test
-	public void landmarkComparisonTest() throws SpimDataException, IOException, JDOMException
+	public void landmarkComparisonTest() throws SpimDataException, IOException, JDOMException, URISyntaxException
 	{
-		bw = createBigWarp( new boolean[] { true, false, false, false } );
+		bw = BigWarpTestUtils.createBigWarp( new boolean[] { true, false, false, false } );
 
 		final String xmlSettings = "src/test/resources/settings/compareKnownXml.bigwarp.settings.xml";
 		final String csvLandmarks = "src/test/resources/settings/landmarks.csv";
@@ -347,42 +340,8 @@ public class SerializationTest
 		final JsonElement jsonSettingsOut = JsonParser.parseReader( in );
 		final JsonElement expectedJson = JsonParser.parseReader( new FileReader( expectedJsonFile ) );
 
-		Assert.assertEquals( expectedJson, jsonSettingsOut );
+		BigWarpTestUtils.assertJsonDiff( expectedJson, jsonSettingsOut );
 
 	}
 
-	private static String prettyPrint( StringWriter json )
-	{
-		return prettyPrint( json.toString() );
-	}
-
-	private static String prettyPrint( String json )
-	{
-		final JsonElement parse = JsonParser.parseString( json );
-		final JsonObject asJsonObject = parse.getAsJsonObject();
-
-		return prettyPrint( asJsonObject );
-	}
-
-	private static String prettyPrint (JsonObject json) {
-
-		return new GsonBuilder().setPrettyPrinting().create().toJson( json );
-	}
-
-	private static BigWarp< ? > createBigWarp( boolean[] moving ) throws SpimDataException
-	{
-		final BigWarpData< Object > data = BigWarpInit.initData();
-		FunctionRandomAccessible< UnsignedByteType > fimg = new FunctionRandomAccessible<>(
-				3,
-				( l, v ) -> v.setOne(),
-				UnsignedByteType::new );
-		ImagePlus imp = ImageJFunctions.wrap( Views.interval( fimg, new FinalInterval( 32, 32, 1 ) ), "img" );
-		for ( int i = 0; i < moving.length; i++ )
-		{
-			BigWarpInit.add( data, imp, i, 0, moving[ i ] );
-		}
-		data.wrapUp();
-		BigWarpViewerOptions opts = BigWarpViewerOptions.options( false );
-		return new BigWarp<>( data, "bigwarp", opts, null );
-	}
 }

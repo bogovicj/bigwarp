@@ -5,7 +5,11 @@
         },
         "0": {
             "isMoving": true
-        }
+        },
+        "956736363": {},
+        "100682715": {},
+        "169699314": {},
+        "33872301": {}
     },
     "ViewerP": {
         "Sources": [
@@ -70,53 +74,46 @@
         "CurrentTimePoint": 0
     },
     "SetupAssignments": {
-        "ConverterSetups": [
-            {
-                "id": 0,
+        "ConverterSetups": {
+            "0": {
                 "min": 0.0,
                 "max": 255.0,
                 "color": -1,
                 "groupId": 0
             },
-            {
-                "id": 1,
+            "1": {
                 "min": 0.0,
                 "max": 255.0,
                 "color": -1,
                 "groupId": 1
             },
-            {
-                "id": 956736363,
+            "956736363": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 2
             },
-            {
-                "id": 1006827158,
+            "1006827158": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 3
             },
-            {
-                "id": 1696993146,
+            "1696993146": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 4
             },
-            {
-                "id": 33872301,
+            "33872301": {
                 "min": 0.0,
                 "max": 65535.0,
                 "color": -1,
                 "groupId": 5
             }
-        ],
-        "MinMaxGroups": [
-            {
-                "id": 0,
+        },
+        "MinMaxGroups": {
+            "0": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -124,8 +121,7 @@
                 "currentMin": 0.0,
                 "currentMax": 255.0
             },
-            {
-                "id": 1,
+            "1": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -133,8 +129,7 @@
                 "currentMin": 0.0,
                 "currentMax": 255.0
             },
-            {
-                "id": 2,
+            "2": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -142,8 +137,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 3,
+            "3": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -151,8 +145,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 4,
+            "4": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -160,8 +153,7 @@
                 "currentMin": 0.0,
                 "currentMax": 512.0
             },
-            {
-                "id": 5,
+            "5": {
                 "fullRangeMin": -2.147483648E9,
                 "fullRangeMax": 2.147483647E9,
                 "rangeMin": 0.0,
@@ -169,7 +161,7 @@
                 "currentMin": 0.0,
                 "currentMax": 1.0
             }
-        ]
+        }
     },
     "Bookmarks": {
         "bookmarks": {}
